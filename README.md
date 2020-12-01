@@ -1,2 +1,2 @@
 # sudoku
-Solution verifier/checker for the class Sudoku puzzle game in Python.
+Solution verifier/checker for the classic Sudoku puzzle game in Python.
