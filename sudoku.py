@@ -16,15 +16,45 @@ def check_solution(certificate):
             if len(certificate[i]) != 9:
                 return False
 
+    result = check_rows(certificate)
+    result = check_columns(certificate)
+    print("result:", result)
+    # result = check_subboxes(certificate)
     
+    return result
+
+
+def check_rows(certificate):
+    """intermediate function called by check_solution in order to determine whether each row of sudoku solution contains digits 1-9 exactly once"""
+    r = len(certificate)
+    
+    for i in range(r):
+        row = set(certificate[i])
+        if (0 in row) or len(row) != 9:
+            return False
+
     return True
 
 def check_columns(certificate):
-    """intermediate function called by check_solution in order to determine whether each column of sudoku solution contains digits 1-9 once"""
-    pass
+    """intermediate function called by check_solution in order to determine whether each column of sudoku solution contains digits 1-9 exactly once"""
+    r = len(certificate)
+    
+    # list of sets, each set is a column
+    col_grid = [set() for x in range(r)]
+    for i in range(r):
+        for j in range(r):
+            col_grid[j].add(certificate[i][j])
+    print(col_grid)
+    
+    # verify cols
+    for i in range(r):
+        if 0 in col_grid[i] or len(col_grid[i]) != 9:
+            return False
+    
+    return True
 
-def check_rows(certificate):
-    """intermediate function called by check_solution in order to determine whether each column of sudoku solution contains digits 1-9 once"""
+def check_subboxes(certificate):
+    """intermediate function called by check_solution in order to determine whether each 3x3 sub-box of sudoku solution contains digits 1-9 exactly once"""
     pass
 
 if __name__ == "__main__":
@@ -39,7 +69,7 @@ if __name__ == "__main__":
                     row.append(int(str_row[i]))
             board.append(row)
 
-        print(board)
+        # print(board)
 
         decision = check_solution(board)
-        print(decision)
+        print("decision:", decision)
