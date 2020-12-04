@@ -16,21 +16,19 @@ def check_solution(certificate):
             if len(certificate[i]) != 9:
                 return False
 
-    result = check_rows(certificate)
-    result = check_columns(certificate)
-    print("result:", result)
-    # result = check_subboxes(certificate)
+    # verify according to sudoku rules
+    if check_rows(certificate) and check_columns(certificate) and check_subboxes(certificate):
+        return True
+    else:
+        return False
     
-    return result
-
-
 def check_rows(certificate):
     """intermediate function called by check_solution in order to determine whether each row of sudoku solution contains digits 1-9 exactly once"""
     r = len(certificate)
     
     for i in range(r):
         row = set(certificate[i])
-        if (0 in row) or len(row) != 9:
+        if sum(row) != 45 or len(row) != 9:
             return False
 
     return True
@@ -46,17 +44,34 @@ def check_columns(certificate):
             col_grid[j].add(certificate[i][j])
     print(col_grid)
     
-    # verify cols
+    # verify columns
     for i in range(r):
-        if 0 in col_grid[i] or len(col_grid[i]) != 9:
+        if sum(col_grid[i]) != 45 or len(col_grid[i]) != 9:
             return False
     
     return True
 
 def check_subboxes(certificate):
-    """intermediate function called by check_solution in order to determine whether each 3x3 sub-box of sudoku solution contains digits 1-9 exactly once"""
-    pass
+    """intermediate function called by check_solution in order to determine whether each 3x3 sub-box of the sudoku solution contains digits 1-9 exactly once"""
+    r = len(certificate)
+    boxes = [[set() for k in range(3)] for l in range(3)]
 
+    # get the subboxes
+    for i in range(r):
+        for j in range(r):
+            row = i // 3
+            col = j // 3
+            boxes[row][col].add(certificate[i][j])
+
+    # verify subboxes
+    for i in range(3):
+        for j in range(3):
+            if sum(boxes[i][j]) != 45 or len(boxes[i][j]) != 9:
+                return False
+
+    return True
+
+# code below grabs board in solution.txt and calls verification
 if __name__ == "__main__":
     with open('solution.txt', 'r') as f:
         board = []
