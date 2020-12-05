@@ -2,89 +2,111 @@
 # Course: CS 325 - Analysis of Algorithms
 # HW 8: Portfolio Assignment
 # Date: 12/7/20
-# Description: For this project I chose to implement a 9x9 Sudoku solution verifier. The verifier takes as input a user-submitted solution.txt and determines whether solution.txt is a valid solution certifiate according to the rules of Sudoku. solution.py contains a 9x9 multi-dimensional array containing digit values 0-9 (where 0 denotes an empty position).
+# Description: User interaction management for the Sudoku program, which allows for a user to input a 9x9 sudoku tile entry they he/she completed for verification or provide a sudoku problem for the solver portion of this program to complete and output.
+import sys
+import sudoku_verifier as Verifier
+import sudoku_solver as Solver
 
-def check_solution(certificate):
-    """iterates over certificate and determines whether certificate is a valid solution according to Sudoku rules: each row, each column, and each non-overlapping 3x3 grid must contain values between 1 and 9. returns True if certificate is a valid solution or False otherwise"""
+def input_error():
+    """"""
+    err_prompt1 = "Sorry, there may have been an error with the input of the board, please try again."
+    err_prompt2 = "To try again, press y or Y. If you would like to quit, press q or Q: "
+    err_keys = {"q": 0, "Q": 0, "y": 1, "Y": 1}
 
-    # check for 9x9 size solution
-    r = len(certificate)
-    if r != 9:
-        return False
-    else:
-        for i in range(r):
-            if len(certificate[i]) != 9:
+    print(err_prompt1)
+    user_key = input(err_prompt2)
+
+    while user_key not in err_keys:
+        user_key = input(err_prompt2)
+
+    if err_keys[user_key] == 0:
+        print("Goodbye!")
+        sys.exit()
+    elif err_keys[user_key] == 1:
+        return
+
+def gather_input(prompt):
+    """gathers sudoku board from user line by line. takes a prompt string as input"""
+    row_prompt = "Row {}: "
+    print(prompt)
+
+    count = 0
+    board = []
+    while count < 9:
+        row = []
+        count += 1
+        line = list(input(row_prompt.format(count)))
+        row_len = len(line)
+        for i in range(row_len):
+            if line[i].isdigit():
+                row.append(int(line[i]))
+        board.append(row)
+    
+    # print("your board:\n{}".format(board))
+    return board
+
+def sudoku_verify():
+    """calls verification methods"""
+    verify_prompt1 = "Let's verify your solution! Please enter your row line by line - comma separated in the format of num1, num2, num3, ..., num9."
+    success_str = "Success! Your board is a correct solution."
+    fail_str = "Sorry, your board is not a correct solution."
+
+    while True:
+        try:
+            board = gather_input(verify_prompt1)
+
+            # verify
+            if Verifier.check_solution(board) == True:
+                print(success_str)
+                return True
+            else:
+                print(fail_str)
                 return False
+        except:
+            input_error()
 
-    # verify according to sudoku rules
-    if check_rows(certificate) and check_columns(certificate) and check_subboxes(certificate):
-        return True
-    else:
-        return False
-    
-def check_rows(certificate):
-    """intermediate function called by check_solution in order to determine whether each row of sudoku solution contains digits 1-9 exactly once"""
-    r = len(certificate)
-    
-    for i in range(r):
-        row = set(certificate[i])
-        if sum(row) != 45 or len(row) != 9:
-            return False
+def sudoku_solve():
+    """calls solution methods"""
+    solve_prompt1 = "Let's verify your board! Please enter your row line by line - comma separated in the format of num1, num2, num3, ..., num9. Use 0 to denote an empty sudoku square."
+    grid_prompt = "The board you gave:"
 
-    return True
+    while True:
+        try:
+            board = gather_input(solve_prompt1)
+            Solver.grid = board
+            print(grid_prompt)
+            Solver.print_grid()
+            Solver.solve()
+            print("Goodbye!")
+            return
+        except:
+            input_error()
+                
 
-def check_columns(certificate):
-    """intermediate function called by check_solution in order to determine whether each column of sudoku solution contains digits 1-9 exactly once"""
-    r = len(certificate)
-    
-    # list of sets, each set is a column
-    col_grid = [set() for x in range(r)]
-    for i in range(r):
-        for j in range(r):
-            col_grid[j].add(certificate[i][j])
-    print(col_grid)
-    
-    # verify columns
-    for i in range(r):
-        if sum(col_grid[i]) != 45 or len(col_grid[i]) != 9:
-            return False
-    
-    return True
-
-def check_subboxes(certificate):
-    """intermediate function called by check_solution in order to determine whether each 3x3 sub-box of the sudoku solution contains digits 1-9 exactly once"""
-    r = len(certificate)
-    boxes = [[set() for k in range(3)] for l in range(3)]
-
-    # get the subboxes
-    for i in range(r):
-        for j in range(r):
-            row = i // 3
-            col = j // 3
-            boxes[row][col].add(certificate[i][j])
-
-    # verify subboxes
-    for i in range(3):
-        for j in range(3):
-            if sum(boxes[i][j]) != 45 or len(boxes[i][j]) != 9:
-                return False
-
-    return True
-
-# code below grabs board in solution.txt and calls verification
 if __name__ == "__main__":
-    with open('solution.txt', 'r') as f:
-        board = []
-        for line in f.readlines():
-            str_row = list(line)
-            row_len = len(str_row)
-            row = []
-            for i in range(row_len):
-                if str_row[i].isdigit():
-                    row.append(int(str_row[i]))
-            board.append(row)
+    greeting_str1 = "Welcome to the Sudoku Verifier/Solver!\n"
+    greeting_str2 = "Written by Rohit Chaudhary\n"
+    method_prompt1 = "If you would like to input a sudoku board solution for me to verify, press v (or V).\n"
+    method_prompt2 = "If you want to input a sudoku board problem to be solved by me, press s (or S): "
+    allowed_input = {"v": 1, "V": 1, "s": 2, "S": 2, "q": 0, "Q": 0}
+    exit_input = {"q", "Q"}
+    error_str1 = "Sorry, I did not recognize that. Please, try again. To quit, press q or Q"
 
-        # print(board)
+    # greetings, determine whether user wants to solve or verify
+    print(greeting_str1 + greeting_str2)
+    user_input = input(method_prompt1 + method_prompt2)
+    while user_input not in allowed_input:
+        print(error_str1)
+        user_input = input(method_prompt1 + method_prompt2)
+    
+    # check for quit
+    if user_input in exit_input:
+        print("Goodbye!")
+        sys.exit()
 
-        decision = check_solution(board)
-        print("decision:", decision)
+    # run appropriate module based on input
+    if allowed_input[user_input] == 1:
+        sudoku_verify()
+    elif allowed_input[user_input] == 2:
+        sudoku_solve()
+    
