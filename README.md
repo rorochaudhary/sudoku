@@ -16,5 +16,6 @@ End up with a 9x9 grid of numbers such that each row, column, and non-overlappin
         + After the 9th row is entered, sudoku.py will verify your solution!
     + #### For solving an incomplete sudoku board:
         - Key press 's' or 'S' when prompted
-        - Just like the verifier, enter your board one comma-separated row at a time
+        - Just like the verifier, enter your board one comma-separated row at a time however empty spaces are replaced with a 0 (must be 0!)
         - After the 9th row is entered, sudoku.py will print the solved board to the console/terminal!
+    + For demonstration purposes, solution.txt and board.txt contain a single solved and a single unsolved sudoku board which you can use with their respective verifier/solver capabilites.
