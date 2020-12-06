@@ -2,13 +2,13 @@
 # Course: CS 325 - Analysis of Algorithms
 # HW 8: Portfolio Assignment
 # Date: 12/7/20
-# Description: User interaction management for the Sudoku program, which allows for a user to input a 9x9 sudoku tile entry they he/she completed for verification or provide a sudoku problem for the solver portion of this program to complete and output.
+# Description: User interaction management for the Sudoku program, which allows for a user to input a 9x9 sudoku tile entry that he/she completed for verification or provide a sudoku problem for the solver portion of this program to complete and output.
 import sys
 import sudoku_verifier as Verifier
 import sudoku_solver as Solver
 
 def input_error():
-    """"""
+    """error resolution during verification or solution stage, allowing user to retry or exit"""
     err_prompt1 = "Sorry, there may have been an error with the input of the board, please try again."
     err_prompt2 = "To try again, press y or Y. If you would like to quit, press q or Q: "
     err_keys = {"q": 0, "Q": 0, "y": 1, "Y": 1}
