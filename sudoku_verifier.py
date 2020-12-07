@@ -1,6 +1,6 @@
 # Name: Rohit Chaudhary
 # Course: CS 325 - Analysis of Algorithms
-# HW 8: Portfolio Assignment
+# HW 8: Portfolio Project
 # Date: 12/7/20
 # Description: For this project I chose to implement a 9x9 Sudoku solution verifier. The verifier takes as input a user-submitted solution.txt and determines whether solution.txt is a valid solution certifiate according to the rules of Sudoku. solution.py contains a 9x9 multi-dimensional array containing digit values 0-9 (where 0 denotes an empty position).
 

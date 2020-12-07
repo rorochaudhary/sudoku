@@ -1,6 +1,6 @@
 # Name: Rohit Chaudhary
 # Course: CS 325 - Analysis of Algorithms
-# HW 8: Portfolio Assignment
+# HW 8: Portfolio Project
 # Date: 12/7/20
 # Description: For this portion I attempted to implmement a backtracking algorithm for solving an incomplete 9x9 sudoku board. The solver takes as input a user-submitted board.txt and solves the board according to traditional Sudoku rules, outputting the result to console. board.txt contains a 9x9 multi-dimensional array containing digit values 0-9 (where 0 denotes an empty position).
 
@@ -56,7 +56,7 @@ def solve():
                     if possible(row, col, digit):
                         grid[row][col] = digit
                         solve()
-                        grid[row][col] = 0  #Backtrack step     
+                        grid[row][col] = 0    
                 return
     print("Solution:")
     print_grid()
