@@ -1,4 +1,6 @@
 # sudoku
+## If viewing this from a source elsewhere than the GitHub repo, source code URL: https://github.com/rorochaudhary/sudoku
+
 ## Solution verifier and checker for the classic 9x9 sudoku game. Includes one playable board.
 
 ### Goal:
